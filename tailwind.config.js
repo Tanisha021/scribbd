@@ -75,6 +75,9 @@ export default {
         energy: ["Energy Script", "cursive"],
         cursive: "cursive",
       },
+      cursor: {
+        draw: "url(/cursor/circle.cur), crosshair",
+      },
     },
   },
   plugins: [tailwindAnimate],

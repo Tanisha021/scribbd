@@ -2,7 +2,7 @@ import ThemeToggler from "./ThemeToggler";
 const Navbar = () => {
   return (
     // <div className="w-full bg-transparent px-3 flex items-center justify-center">
-    <div className="w-full border border-black h-16 bg-white bg-background box-border flex items-center justify-center relative">
+    <div className="w-full border-b border-black h-16 bg-white bg-background box-border flex items-center justify-center relative">
       {/* <div className="relative -left-10 flex items-center gap-2"> */}
       <svg
         className="w-14 h-14 fill-black dark:fill-white"
@@ -36,7 +36,7 @@ const Navbar = () => {
       <p className="text-black -rotate-6 dark:text-white text-3xl relative top-1 font-energy font-semibold">
         Scribbd
       </p>
-      {/* <ThemeToggler /> */}
+      <ThemeToggler />
       {/* </div> */}
     </div>
     // </div>

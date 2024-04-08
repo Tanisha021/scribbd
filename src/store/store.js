@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { useRef } from "react";
 
 const useApplicationStore = create((set) => ({
   // Application State
@@ -12,7 +13,6 @@ const useUserStore = create(
       // User Names and Functions
       name: "",
       setName: (name) => set({ name }),
-
       // Avatar Gender
       gender: 1,
       possibleGenderValues: ["breasts", "chest"],
@@ -137,4 +137,22 @@ const useUserStore = create(
   )
 );
 
-export { useUserStore, useApplicationStore };
+const useGameStore = create((set, get) => ({
+  // User Names and Functions
+  canvasColor: "#ffffff",
+  setCanvasColor: (color) => set({ canvasColor: color }),
+
+  strokeWidth: 5,
+  eraserWidth: 5,
+  setPointerWidth: (width) => set({ strokeWidth: width, eraserWidth: width }),
+
+  strokeColor: "#000000",
+  setStrokeColor: (color) => set({ strokeColor: color }),
+
+  gameChats: [],
+  addChat: (chat) =>
+    set((state) => ({ gameChats: [...state.gameChats, chat] })),
+  clearAllChats: () => set({ gameChats: [] }),
+}));
+
+export { useUserStore, useApplicationStore, useGameStore };

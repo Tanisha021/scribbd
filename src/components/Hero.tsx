@@ -175,6 +175,7 @@ const Hero = () => {
                     name="name"
                     type="text"
                     required
+                    maxLength={20}
                     value={user.name}
                     onChange={(e) => {
                       user.setName(e.target.value);
