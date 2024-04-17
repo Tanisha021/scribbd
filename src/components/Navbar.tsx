@@ -36,7 +36,7 @@ const Navbar = () => {
       <p className="text-black -rotate-6 dark:text-white text-3xl relative top-1 font-energy font-semibold">
         Scribbd
       </p>
-      <ThemeToggler />
+      {/* <ThemeToggler /> */}
       {/* </div> */}
     </div>
     // </div>

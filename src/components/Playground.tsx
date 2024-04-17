@@ -29,7 +29,7 @@ const Playground = () => {
 
   const handleDrawing = async (updatedPaths: CanvasPath[]) => {
     const data = await canvasRef.current?.exportPaths();
-    console.log(data);
+    // console.log(data);
     // send this data to server via socket
     // and use the loadPaths method to load the data
   };

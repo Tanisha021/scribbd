@@ -6,7 +6,7 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
-    "./public/icons/**/*.{svg}",
+    "./public/icons/**/*.svg",
   ],
   theme: {
     container: {

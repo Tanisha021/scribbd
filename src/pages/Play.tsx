@@ -1,6 +1,28 @@
 import Playground from "@/components/Playground";
+import { useEffect } from "react";
+import { useSocketIoStore } from "@/store/store";
+import { join } from "path";
 
 const Play = () => {
+  const { socket, connectSocket, joinRandomRoom, leaveRoom } = useSocketIoStore(
+    (state) => state
+  );
+
+  useEffect(() => {
+    async function connect(url: string) {
+      if (!socket?.connected) {
+        await connectSocket(url);
+        joinRandomRoom();
+      }
+    }
+    connect("http://localhost:3000");
+    window.addEventListener("beforeunload", leaveRoom);
+    return () => {
+      window.removeEventListener("beforeunload", leaveRoom);
+      leaveRoom();
+    };
+  }, []);
+
   return (
     <main className="min-h-screen min-w-screen relative">
       <img

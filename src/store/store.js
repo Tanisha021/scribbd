@@ -1,15 +1,42 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { useRef } from "react";
+import io from "socket.io-client";
 
 const useApplicationStore = create((set) => ({
   // Application State
   tab: "Character",
   setTab: (tab) => set({ tab }),
 }));
+
 const useUserStore = create(
   persist(
     (set, get) => ({
+      getUser: () => {
+        const data = get();
+        const {
+          name,
+          gender,
+          clothing,
+          eyebrow,
+          eyes,
+          hair,
+          mouth,
+          skintone,
+          accessory,
+        } = data;
+        return {
+          name,
+          gender,
+          clothing,
+          eyebrow,
+          eyes,
+          hair,
+          mouth,
+          skintone,
+          accessory,
+        };
+      },
+
       // User Names and Functions
       name: "",
       setName: (name) => set({ name }),
@@ -155,4 +182,57 @@ const useGameStore = create((set, get) => ({
   clearAllChats: () => set({ gameChats: [] }),
 }));
 
-export { useUserStore, useApplicationStore, useGameStore };
+const useSocketIoStore = create((set, get) => ({
+  socket: null,
+  connectSocket: (url) => {
+    return new Promise((resolve, reject) => {
+      let { socket } = get();
+      if (!socket) {
+        socket = io(url);
+
+        socket.on("connect", () => {
+          console.log("Socket.IO connected", socket.id);
+          set({ socket });
+          resolve(socket);
+        });
+
+        socket.on("disconnect", () => {
+          console.log("Socket.IO disconnected");
+          set({ socket: null });
+        });
+
+        socket.on("error", (error) => {
+          console.error("Socket.IO error:", error);
+          reject(error);
+        });
+
+        socket.on("message", (message) => {
+          // Handle incoming messages
+        });
+      } else {
+        resolve(socket);
+      }
+    });
+  },
+  sendMessage: (message) => {
+    const { socket } = get();
+    if (socket) {
+      socket.emit("message", JSON.stringify(message));
+    }
+  },
+  joinRandomRoom: () => {
+    const { socket } = get();
+    if (socket) {
+      socket.emit("join", useUserStore.getState().getUser());
+    }
+  },
+  leaveRoom: () => {
+    const { socket } = get();
+    if (socket) {
+      console.log("Leaving room");
+      socket.emit("leave");
+    }
+  },
+}));
+
+export { useUserStore, useApplicationStore, useGameStore, useSocketIoStore };
