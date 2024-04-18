@@ -1,9 +1,10 @@
-import { useGameStore } from "@/store/store";
+import { useGameStore, useSocketIoStore } from "@/store/store";
 import { Input } from "./ui/input";
 import { useEffect, useRef } from "react";
 
 const ChatList = () => {
   const game = useGameStore();
+  const gameSocket = useSocketIoStore();
   const chatBox = useRef<HTMLDivElement>(null);
   const chats = game.gameChats;
 
@@ -37,9 +38,8 @@ const ChatList = () => {
         placeholder="Type a message"
         className="w-full sticky bottom-0"
         onKeyDown={(e) => {
-          console.log(e);
           if (e.key === "Enter") {
-            game.addChat({ username: "jesssicaa", message: e.target.value });
+            gameSocket.sendMessage(e.target.value);
             e.target.value = "";
             chatBox.current?.scrollTo(0, chatBox.current.scrollHeight);
           }

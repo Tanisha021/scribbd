@@ -206,8 +206,10 @@ const useSocketIoStore = create((set, get) => ({
           reject(error);
         });
 
-        socket.on("message", (message) => {
-          // Handle incoming messages
+        socket.on("message", (data) => {
+          const {name, message} = data;
+          const game = useGameStore.getState()
+          game.addChat({username:name, message})
         });
       } else {
         resolve(socket);
@@ -216,9 +218,12 @@ const useSocketIoStore = create((set, get) => ({
   },
   sendMessage: (message) => {
     const { socket } = get();
+    const {name} = useUserStore.getState();
+    const game = useGameStore.getState();
     if (socket) {
-      socket.emit("message", JSON.stringify(message));
+      socket.emit("message", {name, message});
     }
+    game.addChat({username:name, message});
   },
   joinRandomRoom: () => {
     const { socket } = get();
