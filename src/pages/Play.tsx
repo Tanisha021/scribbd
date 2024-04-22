@@ -1,7 +1,6 @@
 import Playground from "@/components/Playground";
 import { useEffect } from "react";
 import { useSocketIoStore } from "@/store/store";
-import { join } from "path";
 
 const Play = () => {
   const { socket, connectSocket, joinRandomRoom, leaveRoom } = useSocketIoStore(

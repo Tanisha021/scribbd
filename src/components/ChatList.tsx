@@ -17,7 +17,7 @@ const ChatList = () => {
         className="chat-list text-sm flex flex-col divide-y-2 overflow-y-auto"
         ref={chatBox}
       >
-        {chats.map((chat, i) => (
+        {chats.map((chat: any, i: any) => (
           <div
             key={i}
             className={`chat-message flex gap-2 py-1 px-2 ${

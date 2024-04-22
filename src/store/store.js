@@ -165,6 +165,8 @@ const useUserStore = create(
 );
 
 const useGameStore = create((set, get) => ({
+  drawingData: null,
+  setDrawingdata: (data) => set({ drawingData: data }),
   // User Names and Functions
   canvasColor: "#ffffff",
   setCanvasColor: (color) => set({ canvasColor: color }),
@@ -207,9 +209,16 @@ const useSocketIoStore = create((set, get) => ({
         });
 
         socket.on("message", (data) => {
-          const {name, message} = data;
-          const game = useGameStore.getState()
-          game.addChat({username:name, message})
+          const { name, message } = data;
+          const game = useGameStore.getState();
+          game.addChat({ username: name, message });
+        });
+
+        socket.on("draw", (data) => {
+          const game = useGameStore.getState();
+          // set({ drawingData: data });
+          console.log("Drawing data", data);
+          game.setDrawingdata(data);
         });
       } else {
         resolve(socket);
@@ -218,17 +227,23 @@ const useSocketIoStore = create((set, get) => ({
   },
   sendMessage: (message) => {
     const { socket } = get();
-    const {name} = useUserStore.getState();
+    const { name } = useUserStore.getState();
     const game = useGameStore.getState();
     if (socket) {
-      socket.emit("message", {name, message});
+      socket.emit("message", { name, message });
     }
-    game.addChat({username:name, message});
+    game.addChat({ username: name, message });
   },
   joinRandomRoom: () => {
     const { socket } = get();
     if (socket) {
       socket.emit("join", useUserStore.getState().getUser());
+    }
+  },
+  sendDraw: (data) => {
+    const { socket } = get();
+    if (socket) {
+      socket.emit("draw", data);
     }
   },
   leaveRoom: () => {
