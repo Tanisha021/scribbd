@@ -29,18 +29,20 @@ const DrawArea = () => {
     "bg-accent-500 text-white-50 hover:bg-accent-600 hover:text-accent-50 border-2 border-black";
 
   const handleDrawing = (updatedPaths: CanvasPath, isEraser: boolean) => {
-    console.log(updatedPaths);
+    game.setDrawingdata(updatedPaths);
     if (updatedPaths) {
       gameSocket.sendDraw(updatedPaths);
     }
   };
   const handleClearCanvas = () => {
-    gameSocket.sendDraw({
+    const updatedPath = {
       drawMode: "true",
       strokeColor: game.strokeColor,
       strokeWidth: game.strokeWidth,
       paths: [],
-    });
+    };
+    gameSocket.sendDraw(updatedPath);
+    game.setDrawingdata(updatedPath);
   };
   useEffect(() => {
     if (game.drawingData) {

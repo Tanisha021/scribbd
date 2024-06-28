@@ -182,6 +182,16 @@ const useGameStore = create((set, get) => ({
   addChat: (chat) =>
     set((state) => ({ gameChats: [...state.gameChats, chat] })),
   clearAllChats: () => set({ gameChats: [] }),
+
+  players: [],
+  setPlayers: (players) => set({ players }),
+  addPlayer: (player) =>
+    set((state) => ({ players: [...state.players, player] })),
+  removePlayer: (player) =>
+    set((state) => ({
+      players: state.players.filter((p) => p.id !== player.id),
+    })),
+  clearPlayers: () => set({ players: [] }),
 }));
 
 const useSocketIoStore = create((set, get) => ({
@@ -219,6 +229,12 @@ const useSocketIoStore = create((set, get) => ({
           // set({ drawingData: data });
           console.log("Drawing data", data);
           game.setDrawingdata(data);
+        });
+
+        socket.on("usersUpdated", (users) => {
+          console.log(users);
+          const game = useGameStore.getState();
+          game.setPlayers(users);
         });
       } else {
         resolve(socket);
