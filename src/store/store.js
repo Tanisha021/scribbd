@@ -40,6 +40,7 @@ const useUserStore = create(
       // User Names and Functions
       name: "",
       setName: (name) => set({ name }),
+
       // Avatar Gender
       gender: 1,
       possibleGenderValues: ["breasts", "chest"],
@@ -146,7 +147,7 @@ const useUserStore = create(
             "skintone",
             "accessory",
           ];
-          const newState = { ...state };
+          const newState = { ...state }; 
           properties.forEach((property) => {
             const possibleValues =
               state[
@@ -183,7 +184,7 @@ const useGameStore = create((set, get) => ({
     set((state) => ({ gameChats: [...state.gameChats, chat] })),
   clearAllChats: () => set({ gameChats: [] }),
 
-  players: [],
+  players: [],  
   setPlayers: (players) => set({ players }),
   addPlayer: (player) =>
     set((state) => ({ players: [...state.players, player] })),

@@ -53,12 +53,27 @@ const DrawArea = () => {
       }
     }
   }, [game.drawingData]);
+
+  const handleExit = () => {
+    if (gameSocket.socket) {
+      // Notify the server that the user is exiting
+      gameSocket.socket.emit('userExit', { roomId: 'room-id' }); // Replace 'room-id' with the actual room ID
+      
+      // Disconnect the socket
+      gameSocket.socket.disconnect();
+      console.log("user haas exited")
+    }
+
+    // Optionally, redirect the user or update the UI
+    window.location.href = 'http://localhost:5173'; // Redirect to home page
+  };
   return (
     <>
       <div className="bg-background border border-foreground rounded-sm p-2 flex">
         <button
           className="flex items-center gap-1 text-red-500 bg-transparent border border-solid border-red-500 hover:bg-red-500 hover:text-white active:bg-amber-600 font-bold uppercase text-xs px-2 py-2 rounded outline-none focus:outline-none ease-linear transition-all duration-150"
           type="button"
+          onClick={handleExit}
         >
           <IconLogout className="rotate-180" />
           Exit

@@ -7,7 +7,7 @@ const Play = () => {
     (state) => state
   );
 
-  useEffect(() => {
+  useEffect(() => { 
     async function connect(url: string) {
       if (!socket?.connected) {
         await connectSocket(url);
